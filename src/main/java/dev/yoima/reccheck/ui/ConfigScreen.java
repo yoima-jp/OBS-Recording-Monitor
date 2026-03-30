@@ -27,9 +27,7 @@ public final class ConfigScreen extends Screen {
 	private EditBox passwordField;
 	private Button autoReconnectButton;
 	private Button worldOnlyButton;
-	private Button titleScreenButton;
 	private Button startHintButton;
-	private Button soundButton;
 	private Button hudAnchorButton;
 	private Button hudScaleButton;
 	private Button passwordClearButton;
@@ -75,9 +73,7 @@ public final class ConfigScreen extends Screen {
 		hudAnchorButton = addRenderableWidget(cycleButton(rightX, 56, 150, "screen.reccheck.config.hud_position", () -> draft.hudAnchor = draft.hudAnchor.next(), () -> anchorLabel(draft.hudAnchor)));
 		hudScaleButton = addRenderableWidget(cycleButton(rightX, 78, 150, "screen.reccheck.config.hud_scale", () -> draft.hudScale = nextScale(draft.hudScale), () -> Component.literal(String.format("%.2fx", draft.hudScale))));
 		worldOnlyButton = addRenderableWidget(toggleButton(rightX, 100, 150, "screen.reccheck.config.world_only", () -> draft.worldOnly = !draft.worldOnly, () -> draft.worldOnly));
-		titleScreenButton = addRenderableWidget(toggleButton(rightX, 122, 150, "screen.reccheck.config.show_title", () -> draft.showOnTitleScreen = !draft.showOnTitleScreen, () -> draft.showOnTitleScreen));
-		startHintButton = addRenderableWidget(toggleButton(rightX, 144, 150, "screen.reccheck.config.start_hint", () -> draft.showStartRecordHint = !draft.showStartRecordHint, () -> draft.showStartRecordHint));
-		soundButton = addRenderableWidget(toggleButton(rightX, 166, 150, "screen.reccheck.config.sound", () -> draft.notificationSound = !draft.notificationSound, () -> draft.notificationSound));
+		startHintButton = addRenderableWidget(toggleButton(rightX, 122, 150, "screen.reccheck.config.start_hint", () -> draft.showStartRecordHint = !draft.showStartRecordHint, () -> draft.showStartRecordHint));
 
 		testButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.test"), button -> runTest()).bounds(leftX, 188, 72, 20).build());
 		helpButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.help"), button -> Minecraft.getInstance().setScreen(new HelpScreen(this))).bounds(leftX + 76, 188, 72, 20).build());
@@ -177,9 +173,7 @@ public final class ConfigScreen extends Screen {
 	private void refreshToggleText() {
 		autoReconnectButton.setMessage(toggleLabel("screen.reccheck.config.auto_reconnect", draft.autoReconnect));
 		worldOnlyButton.setMessage(toggleLabel("screen.reccheck.config.world_only", draft.worldOnly));
-		titleScreenButton.setMessage(toggleLabel("screen.reccheck.config.show_title", draft.showOnTitleScreen));
 		startHintButton.setMessage(toggleLabel("screen.reccheck.config.start_hint", draft.showStartRecordHint));
-		soundButton.setMessage(toggleLabel("screen.reccheck.config.sound", draft.notificationSound));
 		hudAnchorButton.setMessage(Component.translatable("screen.reccheck.config.hud_position", anchorLabel(draft.hudAnchor)));
 		hudScaleButton.setMessage(Component.translatable("screen.reccheck.config.hud_scale", Component.literal(String.format("%.2fx", draft.hudScale))));
 	}

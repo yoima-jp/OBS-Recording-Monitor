@@ -4,9 +4,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.yoima.reccheck.config.ModConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -179,36 +179,10 @@ public final class ObsConnectionManager {
 	}
 
 	private void updateSnapshot(ObsConnectionSnapshot next) {
-		ObsConnectionSnapshot previous = snapshot.getAndSet(next);
+		snapshot.getAndSet(next);
 		if (next.state() == ObsConnectionState.CONNECTED_RECORDING || next.state() == ObsConnectionState.CONNECTED_NOT_RECORDING) {
 			reconnectScheduled.set(false);
 		}
-		if (shouldPlayWarningSound(previous, next)) {
-			playWarningSound();
-		}
-	}
-
-	private boolean shouldPlayWarningSound(ObsConnectionSnapshot previous, ObsConnectionSnapshot next) {
-		if (!config.get().notificationSound) {
-			return false;
-		}
-		if (previous == null || previous.state() == next.state()) {
-			return false;
-		}
-		return switch (next.state()) {
-			case CONNECTED_NOT_RECORDING, DISCONNECTED, AUTH_FAILED, ERROR -> true;
-			default -> false;
-		};
-	}
-
-	private void playWarningSound() {
-		long now = System.currentTimeMillis();
-		if (now - lastWarningSoundState < 1500L) {
-			return;
-		}
-		lastWarningSoundState = now;
-		Minecraft minecraft = Minecraft.getInstance();
-		minecraft.execute(() -> minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F)));
 	}
 
 	private void sendRequest(String requestType, JsonObject requestData, java.util.function.Consumer<ObsTestResult> consumer) {

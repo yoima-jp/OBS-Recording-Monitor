@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public final class ObsHudRenderer implements HudElement {
@@ -22,23 +23,30 @@ public final class ObsHudRenderer implements HudElement {
 	@Override
 	public void render(GuiGraphics graphics, DeltaTracker tickCounter) {
 		Minecraft client = Minecraft.getInstance();
+		renderOverlay(client, client.screen, graphics);
+	}
+
+	public void renderOverlay(Minecraft client, Screen screen, GuiGraphics graphics) {
 		if (client == null) {
 			return;
 		}
 		ObsConnectionSnapshot snapshot = manager.snapshot();
 		var config = configManager.getConfig();
-		if (!shouldRender(client, config, snapshot)) {
+		if (!shouldRender(client, screen, config, snapshot)) {
 			return;
 		}
 
 		int width = client.getWindow().getGuiScaledWidth();
 		int height = client.getWindow().getGuiScaledHeight();
 		float scale = (float) config.hudScale;
-		int panelWidth = 126;
-		int panelHeight = snapshot.state() == ObsConnectionState.CONNECTING ? 28 : 38;
-		if (config.showStartRecordHint && snapshot.state() == ObsConnectionState.CONNECTED_NOT_RECORDING) {
-			panelHeight += 14;
-		}
+		Component headline = Component.translatable(snapshot.headlineKey());
+		Component detail = Component.translatable(snapshot.detailKey());
+		Component hint = config.showStartRecordHint && snapshot.state() == ObsConnectionState.CONNECTED_NOT_RECORDING
+			? Component.translatable("hud.reccheck.start_hint")
+			: Component.empty();
+
+		int panelWidth = computePanelWidth(client, headline, detail, hint);
+		int panelHeight = hint.getString().isEmpty() ? 38 : 52;
 
 		int drawWidth = Math.round(panelWidth * scale);
 		int drawHeight = Math.round(panelHeight * scale);
@@ -62,23 +70,32 @@ public final class ObsHudRenderer implements HudElement {
 		graphics.fill(x + 8, y + 8, x + 14, y + 14, accent);
 		graphics.drawString(client.font, iconFor(snapshot), x + 8, y + 4, 0xFFFFFFFF, false);
 
-		graphics.drawString(client.font, Component.translatable(snapshot.headlineKey()), x + 22, y + 6, 0xFFFFFFFF, false);
-		graphics.drawString(client.font, Component.translatable(snapshot.detailKey()), x + 22, y + 18, 0xFFd7d7d7, false);
+		graphics.drawString(client.font, headline, x + 22, y + 6, 0xFFFFFFFF, false);
+		graphics.drawString(client.font, detail, x + 22, y + 18, 0xFFd7d7d7, false);
 
-		if (config.showStartRecordHint && snapshot.state() == ObsConnectionState.CONNECTED_NOT_RECORDING) {
+		if (!hint.getString().isEmpty()) {
 			graphics.fill(x + 22, y + 28, x + drawWidth - 6, y + drawHeight - 4, 0x66000000);
-			graphics.drawString(client.font, Component.translatable("hud.reccheck.start_hint"), x + 26, y + 31, 0xFFFFD35A, false);
+			graphics.drawString(client.font, hint, x + 26, y + 31, 0xFFFFD35A, false);
 		}
 	}
 
-	private boolean shouldRender(Minecraft client, dev.yoima.reccheck.config.ModConfig config, ObsConnectionSnapshot snapshot) {
-		if (config.worldOnly && client.level == null) {
+	private boolean shouldRender(Minecraft client, Screen screen, dev.yoima.reccheck.config.ModConfig config, ObsConnectionSnapshot snapshot) {
+		boolean inWorld = client.level != null;
+		if (config.worldOnly && !inWorld) {
 			return false;
 		}
-		if (!config.showOnTitleScreen && client.level == null) {
+		if (!inWorld && screen == null) {
 			return false;
 		}
 		return snapshot.state() != ObsConnectionState.CONNECTED_RECORDING;
+	}
+
+	private int computePanelWidth(Minecraft client, Component headline, Component detail, Component hint) {
+		int textWidth = Math.max(client.font.width(headline), client.font.width(detail));
+		if (!hint.getString().isEmpty()) {
+			textWidth = Math.max(textWidth, client.font.width(hint));
+		}
+		return Math.max(126, textWidth + 34);
 	}
 
 	private static int backgroundColor(ObsConnectionSnapshot snapshot) {

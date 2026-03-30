@@ -15,9 +15,7 @@
   "screen.reccheck.config.hud_position": "HUD position: %s",
   "screen.reccheck.config.hud_scale": "HUD scale: %s",
   "screen.reccheck.config.world_only": "World only: %s",
-  "screen.reccheck.config.show_title": "Show on title: %s",
   "screen.reccheck.config.start_hint": "Start-record helper: %s",
-  "screen.reccheck.config.sound": "Notification sound: %s",
   "screen.reccheck.button.test": "Connection test",
   "screen.reccheck.button.help": "How to connect",
   "screen.reccheck.button.save": "Save",
@@ -52,7 +50,7 @@
   "hud.reccheck.error.detail.request": "OBS rejected the request",
   "hud.reccheck.invalid_config": "Invalid settings",
   "hud.reccheck.invalid_config.detail": "Check the host name and port number",
-  "hud.reccheck.start_hint": "F9: Start recording",
+  "hud.reccheck.start_hint": "Press F9 to start recording",
 
   "test.reccheck.pending": "Waiting for test",
   "test.reccheck.pending.detail": "Run a connection test to see the result here",

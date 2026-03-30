@@ -7,9 +7,7 @@ public final class ModConfig {
 	public boolean autoReconnect = true;
 	public HudAnchor hudAnchor = HudAnchor.TOP_RIGHT;
 	public double hudScale = 1.0D;
-	public boolean notificationSound = true;
 	public boolean worldOnly = false;
-	public boolean showOnTitleScreen = true;
 	public boolean showStartRecordHint = false;
 
 	public ModConfig copy() {
@@ -20,9 +18,7 @@ public final class ModConfig {
 		copy.autoReconnect = autoReconnect;
 		copy.hudAnchor = hudAnchor;
 		copy.hudScale = hudScale;
-		copy.notificationSound = notificationSound;
 		copy.worldOnly = worldOnly;
-		copy.showOnTitleScreen = showOnTitleScreen;
 		copy.showStartRecordHint = showStartRecordHint;
 		return copy;
 	}
@@ -34,9 +30,7 @@ public final class ModConfig {
 		autoReconnect = other.autoReconnect;
 		hudAnchor = other.hudAnchor;
 		hudScale = other.hudScale;
-		notificationSound = other.notificationSound;
 		worldOnly = other.worldOnly;
-		showOnTitleScreen = other.showOnTitleScreen;
 		showStartRecordHint = other.showStartRecordHint;
 	}
 

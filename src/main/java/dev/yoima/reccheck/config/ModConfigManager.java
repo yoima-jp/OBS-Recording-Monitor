@@ -33,9 +33,7 @@ public final class ModConfigManager {
 			loaded.autoReconnect = getBoolean(root, "autoReconnect", loaded.autoReconnect);
 			loaded.hudAnchor = parseHudAnchor(getString(root, "hudAnchor", loaded.hudAnchor.name()));
 			loaded.hudScale = getDouble(root, "hudScale", loaded.hudScale);
-			loaded.notificationSound = getBoolean(root, "notificationSound", loaded.notificationSound);
 			loaded.worldOnly = getBoolean(root, "worldOnly", loaded.worldOnly);
-			loaded.showOnTitleScreen = getBoolean(root, "showOnTitleScreen", loaded.showOnTitleScreen);
 			loaded.showStartRecordHint = getBoolean(root, "showStartRecordHint", loaded.showStartRecordHint);
 			config = normalize(loaded);
 		} catch (Exception ex) {
@@ -83,9 +81,7 @@ public final class ModConfigManager {
 		root.addProperty("autoReconnect", config.autoReconnect);
 		root.addProperty("hudAnchor", config.hudAnchor.name());
 		root.addProperty("hudScale", config.hudScale);
-		root.addProperty("notificationSound", config.notificationSound);
 		root.addProperty("worldOnly", config.worldOnly);
-		root.addProperty("showOnTitleScreen", config.showOnTitleScreen);
 		root.addProperty("showStartRecordHint", config.showStartRecordHint);
 		return root;
 	}

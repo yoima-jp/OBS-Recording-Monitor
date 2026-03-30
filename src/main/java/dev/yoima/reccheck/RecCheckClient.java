@@ -26,6 +26,7 @@ public final class RecCheckClient implements ClientModInitializer {
 
 	private final ModConfigManager configManager = new ModConfigManager();
 	private final ObsConnectionManager obsConnectionManager = new ObsConnectionManager();
+	private final ObsHudRenderer hudRenderer = new ObsHudRenderer(obsConnectionManager, configManager);
 	private KeyMapping startRecordKey;
 
 	public RecCheckClient() {
@@ -37,7 +38,7 @@ public final class RecCheckClient implements ClientModInitializer {
 		configManager.load();
 		obsConnectionManager.applyConfig(configManager.getConfig(), false);
 
-		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "obs_warning"), new ObsHudRenderer(obsConnectionManager, configManager));
+		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "obs_warning"), hudRenderer);
 
 		ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
 			if (screen instanceof TitleScreen) {
@@ -46,6 +47,11 @@ public final class RecCheckClient implements ClientModInitializer {
 					.build();
 				Screens.getButtons(screen).add(button);
 			}
+			ScreenEvents.afterRender(screen).register((s, graphics, mouseX, mouseY, delta) -> {
+				if (client.level == null) {
+					hudRenderer.renderOverlay(client, (Screen) s, graphics);
+				}
+			});
 		});
 		obsConnectionManager.start();
 

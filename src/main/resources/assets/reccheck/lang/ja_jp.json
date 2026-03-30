@@ -15,9 +15,7 @@
   "screen.reccheck.config.hud_position": "HUD位置: %s",
   "screen.reccheck.config.hud_scale": "HUDスケール: %s",
   "screen.reccheck.config.world_only": "ワールド内のみ: %s",
-  "screen.reccheck.config.show_title": "タイトル画面表示: %s",
   "screen.reccheck.config.start_hint": "録画開始補助: %s",
-  "screen.reccheck.config.sound": "通知音: %s",
   "screen.reccheck.button.test": "接続テスト",
   "screen.reccheck.button.help": "接続方法",
   "screen.reccheck.button.save": "保存",
@@ -52,7 +50,7 @@
   "hud.reccheck.error.detail.request": "OBSがリクエストを受け付けませんでした",
   "hud.reccheck.invalid_config": "設定に問題があります",
   "hud.reccheck.invalid_config.detail": "ホスト名かポート番号を確認してください",
-  "hud.reccheck.start_hint": "F9: 録画開始",
+  "hud.reccheck.start_hint": "F9で録画開始",
 
   "test.reccheck.pending": "接続テスト待機中",
   "test.reccheck.pending.detail": "接続テストを押すと結果がここに出ます",
