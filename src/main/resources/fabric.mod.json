@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "reccheck",
+  "version": "${version}",
+  "name": "REC Check",
+  "description": "OBSの録画状態を監視して、録画忘れを防ぐクライアント専用Fabric modです。",
+  "authors": ["yoima"],
+  "environment": "client",
+  "entrypoints": {
+    "client": ["dev.yoima.reccheck.RecCheckClient"]
+  },
+  "depends": {
+    "minecraft": "1.21.11",
+    "fabricloader": ">=0.18.2",
+    "fabric-api": "*"
+  }
+}
