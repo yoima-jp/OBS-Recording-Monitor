@@ -1,5 +1,6 @@
 package dev.yoima.reccheck.hud;
 
+import dev.yoima.reccheck.RecCheckClient;
 import dev.yoima.reccheck.config.HudAnchor;
 import dev.yoima.reccheck.config.ModConfigManager;
 import dev.yoima.reccheck.obs.ObsConnectionSnapshot;
@@ -12,6 +13,15 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public final class ObsHudRenderer implements HudElement {
+	private static final int ICON_BOX_X = 8;
+	private static final int ICON_BOX_Y = 6;
+	private static final int ICON_BOX_SIZE = 10;
+	private static final int TEXT_X = 22;
+	private static final int HEADLINE_Y = 6;
+	private static final int DETAIL_Y = 18;
+	private static final int HINT_BOX_Y = 28;
+	private static final int HINT_TEXT_Y = 31;
+
 	private final dev.yoima.reccheck.obs.ObsConnectionManager manager;
 	private final ModConfigManager configManager;
 
@@ -41,8 +51,8 @@ public final class ObsHudRenderer implements HudElement {
 		float scale = (float) config.hudScale;
 		Component headline = Component.translatable(snapshot.headlineKey());
 		Component detail = Component.translatable(snapshot.detailKey());
-		Component hint = config.showStartRecordHint && snapshot.state() == ObsConnectionState.CONNECTED_NOT_RECORDING
-			? Component.translatable("hud.reccheck.start_hint")
+		Component hint = snapshot.state() == ObsConnectionState.CONNECTED_NOT_RECORDING
+			? startHint()
 			: Component.empty();
 
 		int panelWidth = computePanelWidth(client, headline, detail, hint);
@@ -66,20 +76,24 @@ public final class ObsHudRenderer implements HudElement {
 		graphics.fill(x, y + drawHeight - 1, x + drawWidth, y + drawHeight, 0x40222222);
 
 		int accent = accentColor(snapshot);
+		Component icon = iconFor(snapshot);
 		graphics.fill(x, y, x + 3, y + drawHeight, accent);
-		graphics.fill(x + 8, y + 8, x + 14, y + 14, accent);
-		graphics.drawString(client.font, iconFor(snapshot), x + 8, y + 4, 0xFFFFFFFF, false);
+		graphics.fill(x + ICON_BOX_X, y + ICON_BOX_Y, x + ICON_BOX_X + ICON_BOX_SIZE, y + ICON_BOX_Y + ICON_BOX_SIZE, accent);
+		graphics.drawString(client.font, icon, iconX(client, x, icon), iconY(client, y), 0xFFFFFFFF, false);
 
-		graphics.drawString(client.font, headline, x + 22, y + 6, 0xFFFFFFFF, false);
-		graphics.drawString(client.font, detail, x + 22, y + 18, 0xFFd7d7d7, false);
+		graphics.drawString(client.font, headline, x + TEXT_X, y + HEADLINE_Y, 0xFFFFFFFF, false);
+		graphics.drawString(client.font, detail, x + TEXT_X, y + DETAIL_Y, 0xFFd7d7d7, false);
 
 		if (!hint.getString().isEmpty()) {
-			graphics.fill(x + 22, y + 28, x + drawWidth - 6, y + drawHeight - 4, 0x66000000);
-			graphics.drawString(client.font, hint, x + 26, y + 31, 0xFFFFD35A, false);
+			graphics.fill(x + TEXT_X, y + HINT_BOX_Y, x + drawWidth - 6, y + drawHeight - 4, 0x66000000);
+			graphics.drawString(client.font, hint, x + TEXT_X + 4, y + HINT_TEXT_Y, 0xFFFFD35A, false);
 		}
 	}
 
 	private boolean shouldRender(Minecraft client, Screen screen, dev.yoima.reccheck.config.ModConfig config, ObsConnectionSnapshot snapshot) {
+		if (!config.showHud) {
+			return false;
+		}
 		boolean inWorld = client.level != null;
 		if (config.worldOnly && !inWorld) {
 			return false;
@@ -96,6 +110,24 @@ public final class ObsHudRenderer implements HudElement {
 			textWidth = Math.max(textWidth, client.font.width(hint));
 		}
 		return Math.max(126, textWidth + 34);
+	}
+
+	private static Component startHint() {
+		RecCheckClient mod = RecCheckClient.get();
+		Component keyName = mod != null && mod.startRecordKey() != null
+			? mod.startRecordKey().getTranslatedKeyMessage()
+			: Component.literal("F9");
+		return Component.translatable("hud.reccheck.start_hint", keyName);
+	}
+
+	private static int iconX(Minecraft client, int panelX, Component icon) {
+		int iconWidth = client.font.width(icon);
+		return panelX + ICON_BOX_X + Math.max(0, (ICON_BOX_SIZE - iconWidth) / 2);
+	}
+
+	private static int iconY(Minecraft client, int panelY) {
+		int verticalPadding = Math.max(0, (ICON_BOX_SIZE - client.font.lineHeight) / 2);
+		return panelY + ICON_BOX_Y + verticalPadding + 1;
 	}
 
 	private static int backgroundColor(ObsConnectionSnapshot snapshot) {

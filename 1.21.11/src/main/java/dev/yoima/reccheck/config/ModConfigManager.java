@@ -31,10 +31,10 @@ public final class ModConfigManager {
 			loaded.obsPort = getInt(root, "obsPort", loaded.obsPort);
 			loaded.obsPassword = getString(root, "obsPassword", loaded.obsPassword);
 			loaded.autoReconnect = getBoolean(root, "autoReconnect", loaded.autoReconnect);
+			loaded.showHud = getBoolean(root, "showHud", loaded.showHud);
 			loaded.hudAnchor = parseHudAnchor(getString(root, "hudAnchor", loaded.hudAnchor.name()));
 			loaded.hudScale = getDouble(root, "hudScale", loaded.hudScale);
 			loaded.worldOnly = getBoolean(root, "worldOnly", loaded.worldOnly);
-			loaded.showStartRecordHint = getBoolean(root, "showStartRecordHint", loaded.showStartRecordHint);
 			config = normalize(loaded);
 		} catch (Exception ex) {
 			config = ModConfig.defaults();
@@ -79,10 +79,10 @@ public final class ModConfigManager {
 		root.addProperty("obsPort", config.obsPort);
 		root.addProperty("obsPassword", config.obsPassword);
 		root.addProperty("autoReconnect", config.autoReconnect);
+		root.addProperty("showHud", config.showHud);
 		root.addProperty("hudAnchor", config.hudAnchor.name());
 		root.addProperty("hudScale", config.hudScale);
 		root.addProperty("worldOnly", config.worldOnly);
-		root.addProperty("showStartRecordHint", config.showStartRecordHint);
 		return root;
 	}
 

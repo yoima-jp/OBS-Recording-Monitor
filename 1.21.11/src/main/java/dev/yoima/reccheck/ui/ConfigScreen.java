@@ -26,8 +26,8 @@ public final class ConfigScreen extends Screen {
 	private EditBox portField;
 	private EditBox passwordField;
 	private Button autoReconnectButton;
+	private Button showHudButton;
 	private Button worldOnlyButton;
-	private Button startHintButton;
 	private Button hudAnchorButton;
 	private Button hudScaleButton;
 	private Button passwordClearButton;
@@ -76,7 +76,7 @@ public final class ConfigScreen extends Screen {
 		hudAnchorButton = addRenderableWidget(cycleButton(rightX, toggleY + 22, 150, "screen.reccheck.config.hud_position", () -> draft.hudAnchor = draft.hudAnchor.next(), () -> anchorLabel(draft.hudAnchor)));
 		hudScaleButton = addRenderableWidget(cycleButton(rightX, toggleY + 44, 150, "screen.reccheck.config.hud_scale", () -> draft.hudScale = nextScale(draft.hudScale), () -> Component.literal(String.format("%.2fx", draft.hudScale))));
 		worldOnlyButton = addRenderableWidget(toggleButton(rightX, toggleY + 66, 150, "screen.reccheck.config.world_only", () -> draft.worldOnly = !draft.worldOnly, () -> draft.worldOnly));
-		startHintButton = addRenderableWidget(toggleButton(rightX, toggleY + 88, 150, "screen.reccheck.config.start_hint", () -> draft.showStartRecordHint = !draft.showStartRecordHint, () -> draft.showStartRecordHint));
+		showHudButton = addRenderableWidget(toggleButton(rightX, toggleY + 88, 150, "screen.reccheck.config.show_hud", () -> draft.showHud = !draft.showHud, () -> draft.showHud));
 
 		testButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.test"), button -> runTest()).bounds(leftX, footerY, 72, 20).build());
 		helpButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.help"), button -> Minecraft.getInstance().setScreen(new HelpScreen(this))).bounds(leftX + 76, footerY, 72, 20).build());
@@ -177,8 +177,8 @@ public final class ConfigScreen extends Screen {
 
 	private void refreshToggleText() {
 		autoReconnectButton.setMessage(toggleLabel("screen.reccheck.config.auto_reconnect", draft.autoReconnect));
+		showHudButton.setMessage(toggleLabel("screen.reccheck.config.show_hud", draft.showHud));
 		worldOnlyButton.setMessage(toggleLabel("screen.reccheck.config.world_only", draft.worldOnly));
-		startHintButton.setMessage(toggleLabel("screen.reccheck.config.start_hint", draft.showStartRecordHint));
 		hudAnchorButton.setMessage(Component.translatable("screen.reccheck.config.hud_position", anchorLabel(draft.hudAnchor)));
 		hudScaleButton.setMessage(Component.translatable("screen.reccheck.config.hud_scale", Component.literal(String.format("%.2fx", draft.hudScale))));
 	}

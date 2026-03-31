@@ -56,11 +56,13 @@ public final class RecCheckClient implements ClientModInitializer {
 				int leftColumnWidth = 150;
 				int maxGridY = -1;
 				int doneY = Integer.MAX_VALUE;
+				Object doneButton = null;
 
 				for (var existing : buttons) {
 					String text = existing.getMessage().getString();
 					if (text.equals(doneLabel)) {
 						doneY = existing.getY();
+						doneButton = existing;
 						continue;
 					}
 
@@ -81,7 +83,16 @@ public final class RecCheckClient implements ClientModInitializer {
 					leftColumnX = width / 2 - 155;
 				}
 
-				int openY = maxGridY >= 0 ? maxGridY + 24 : height - 96;
+				int desiredOpenY = maxGridY >= 0 ? maxGridY + 24 : height - 96;
+				if (doneY != Integer.MAX_VALUE && desiredOpenY > doneY - 24 && doneButton instanceof net.minecraft.client.gui.components.AbstractWidget widget) {
+					int shiftedDoneY = Math.min(height - 28, doneY + 24);
+					if (shiftedDoneY > doneY) {
+						widget.setY(shiftedDoneY);
+						doneY = shiftedDoneY;
+					}
+				}
+
+				int openY = desiredOpenY;
 				if (doneY != Integer.MAX_VALUE) {
 					openY = Math.min(openY, doneY - 24);
 				}
@@ -111,9 +122,7 @@ public final class RecCheckClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (startRecordKey.consumeClick()) {
-				if (configManager.getConfig().showStartRecordHint) {
-					obsConnectionManager.requestStartRecording(client);
-				}
+				obsConnectionManager.requestStartRecording(client);
 			}
 		});
 

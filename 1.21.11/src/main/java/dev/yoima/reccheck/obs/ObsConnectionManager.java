@@ -82,9 +82,6 @@ public final class ObsConnectionManager {
 	}
 
 	public void requestStartRecording(Minecraft client) {
-		if (!config.get().showStartRecordHint) {
-			return;
-		}
 		WebSocket socket = currentSocket;
 		if (socket == null || snapshot.get().state() != ObsConnectionState.CONNECTED_NOT_RECORDING) {
 			return;

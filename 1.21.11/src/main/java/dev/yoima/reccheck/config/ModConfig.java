@@ -5,10 +5,10 @@ public final class ModConfig {
 	public int obsPort = 4455;
 	public String obsPassword = "";
 	public boolean autoReconnect = true;
+	public boolean showHud = true;
 	public HudAnchor hudAnchor = HudAnchor.TOP_RIGHT;
 	public double hudScale = 1.0D;
 	public boolean worldOnly = false;
-	public boolean showStartRecordHint = false;
 
 	public ModConfig copy() {
 		ModConfig copy = new ModConfig();
@@ -16,10 +16,10 @@ public final class ModConfig {
 		copy.obsPort = obsPort;
 		copy.obsPassword = obsPassword;
 		copy.autoReconnect = autoReconnect;
+		copy.showHud = showHud;
 		copy.hudAnchor = hudAnchor;
 		copy.hudScale = hudScale;
 		copy.worldOnly = worldOnly;
-		copy.showStartRecordHint = showStartRecordHint;
 		return copy;
 	}
 
@@ -28,10 +28,10 @@ public final class ModConfig {
 		obsPort = other.obsPort;
 		obsPassword = other.obsPassword;
 		autoReconnect = other.autoReconnect;
+		showHud = other.showHud;
 		hudAnchor = other.hudAnchor;
 		hudScale = other.hudScale;
 		worldOnly = other.worldOnly;
-		showStartRecordHint = other.showStartRecordHint;
 	}
 
 	public static ModConfig defaults() {

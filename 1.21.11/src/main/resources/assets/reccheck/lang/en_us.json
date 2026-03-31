@@ -1,6 +1,6 @@
 {
   "key.categories.reccheck": "OBS Recording Monitor",
-  "key.reccheck.start_record": "Start Recording",
+  "key.reccheck.start_record": "Start OBS Recording",
 
   "screen.reccheck.config.title": "OBS Recording Monitor Settings",
   "screen.reccheck.config.subtitle": "Watch OBS recording state and avoid forgetting to record.",
@@ -12,16 +12,16 @@
   "screen.reccheck.config.password_set": "Saved",
   "screen.reccheck.config.password_hint": "Leave blank to keep the current password.",
   "screen.reccheck.config.auto_reconnect": "Auto reconnect: %s",
+  "screen.reccheck.config.show_hud": "Show HUD: %s",
   "screen.reccheck.config.hud_position": "HUD position: %s",
   "screen.reccheck.config.hud_scale": "HUD scale: %s",
   "screen.reccheck.config.world_only": "World only: %s",
-  "screen.reccheck.config.start_hint": "Start-record helper: %s",
   "screen.reccheck.section.connection": "Connection",
   "screen.reccheck.section.behavior": "Behavior",
-  "screen.reccheck.button.test": "Connection test",
+  "screen.reccheck.button.test": "Test",
   "screen.reccheck.button.open": "OBS Recording Monitor",
   "screen.reccheck.button.open_short": "OBS Recording...",
-  "screen.reccheck.button.help": "How to connect",
+  "screen.reccheck.button.help": "Guide",
   "screen.reccheck.button.save": "Save",
   "screen.reccheck.button.cancel": "Back",
   "screen.reccheck.button.back": "Back",
@@ -54,7 +54,7 @@
   "hud.reccheck.error.detail.request": "OBS rejected the request",
   "hud.reccheck.invalid_config": "Invalid settings",
   "hud.reccheck.invalid_config.detail": "Check the host name and port number",
-  "hud.reccheck.start_hint": "Press F9 to start recording",
+  "hud.reccheck.start_hint": "Press %s to start recording",
 
   "test.reccheck.pending": "Waiting for test",
   "test.reccheck.pending.detail": "Run a connection test to see the result here",
@@ -80,6 +80,11 @@
   "test.reccheck.hint.retry": "Try again after a short wait",
 
   "screen.reccheck.help.title": "How to connect to OBS",
+  "screen.reccheck.help.images": "OBS setup examples",
+  "screen.reccheck.help.details": "Notes and checks",
+  "screen.reccheck.help.step1": "1. Open Tools -> WebSocket Server Settings in OBS",
+  "screen.reccheck.help.step2": "2. Enable the WebSocket server and click Show Connect Info",
+  "screen.reccheck.help.step3": "3. Copy the shown port and password into this mod's settings",
   "screen.reccheck.help.body": "1. Start OBS Studio\n2. Open OBS: Tools -> obs-websocket settings\n3. Turn on the WebSocket server\n4. Set a password if you want\n5. Check the displayed port number\n6. Enter the host, port, and password in this mod's settings\n7. Press the Connection Test button\n8. Save once it passes\n\nCommon failures:\n- OBS is not running\n- WebSocket is disabled\n- Wrong port number\n- Wrong password\n- The host is not localhost when OBS is on the same PC\n\nTest result colors:\n- Green: connected\n- Yellow: connecting / reconnecting\n- Red: authentication failed\n- Orange: OBS unavailable or wrong port is likely\n\nTip:\n- If OBS is on this PC, the host should usually be localhost\n- If you get stuck, go through the steps in order",
 
   "command.reccheck.start_record.failed": "Failed to start recording. Check OBS state."

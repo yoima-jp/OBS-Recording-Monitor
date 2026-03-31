@@ -1,6 +1,6 @@
 {
   "key.categories.reccheck": "OBS Recording Monitor",
-  "key.reccheck.start_record": "録画開始",
+  "key.reccheck.start_record": "OBSで録画開始",
 
   "screen.reccheck.config.title": "OBS Recording Monitor 設定",
   "screen.reccheck.config.subtitle": "OBSの録画状態を見て、録画忘れを防ぎます。",
@@ -12,10 +12,10 @@
   "screen.reccheck.config.password_set": "設定済み",
   "screen.reccheck.config.password_hint": "空欄なら今のパスワードを維持します。",
   "screen.reccheck.config.auto_reconnect": "自動再接続: %s",
+  "screen.reccheck.config.show_hud": "HUD表示: %s",
   "screen.reccheck.config.hud_position": "HUD位置: %s",
   "screen.reccheck.config.hud_scale": "HUDスケール: %s",
   "screen.reccheck.config.world_only": "ワールド内のみ: %s",
-  "screen.reccheck.config.start_hint": "録画開始補助: %s",
   "screen.reccheck.section.connection": "接続設定",
   "screen.reccheck.section.behavior": "動作設定",
   "screen.reccheck.button.test": "接続テスト",
@@ -54,7 +54,7 @@
   "hud.reccheck.error.detail.request": "OBSがリクエストを受け付けませんでした",
   "hud.reccheck.invalid_config": "設定に問題があります",
   "hud.reccheck.invalid_config.detail": "ホスト名かポート番号を確認してください",
-  "hud.reccheck.start_hint": "F9で録画開始",
+  "hud.reccheck.start_hint": "%sで録画開始",
 
   "test.reccheck.pending": "接続テスト待機中",
   "test.reccheck.pending.detail": "接続テストを押すと結果がここに出ます",
@@ -80,6 +80,11 @@
   "test.reccheck.hint.retry": "少し待ってからもう一度試してください",
 
   "screen.reccheck.help.title": "OBSとの接続方法",
+  "screen.reccheck.help.images": "OBS側の設定例",
+  "screen.reccheck.help.details": "補足と確認ポイント",
+  "screen.reccheck.help.step1": "1. OBSで『ツール → WebSocketサーバー設定』を開く",
+  "screen.reccheck.help.step2": "2. WebSocketサーバーを有効にして『接続情報を表示』を押す",
+  "screen.reccheck.help.step3": "3. 接続情報のポートやパスワードをコピーしてこの mod に入力する",
   "screen.reccheck.help.body": "1. OBS Studio を起動する\n2. OBS の『ツール』→『obs-websocket設定』を開く\n3. WebSocketサーバーを有効化する\n4. 必要ならパスワードを設定する\n5. 表示されたポート番号を確認する\n6. この mod の設定画面にホスト、ポート、パスワードを入力する\n7. 『接続テスト』ボタンを押す\n8. 成功したら保存する\n\nよくある失敗:\n- OBSが起動していない\n- WebSocketが無効\n- ポート番号違い\n- パスワード違い\n- localhost 以外を設定している\n\nテスト結果の見方:\n- 緑: 接続成功\n- 黄: 接続中 / 再接続中\n- 赤: 認証失敗\n- 橙: OBSに接続できない、またはポート違いの可能性\n\n補足:\n- 自分のPCのOBSならホストは localhost で大丈夫です\n- 迷ったら、この画面を見ながら順番に確認してください",
 
   "command.reccheck.start_record.failed": "録画開始に失敗しました。OBS側の状態を確認してください"
