@@ -1,7 +1,8 @@
 # 実装メモ
 
 ## 主要クラス
-- `RecCheckClient`: クライアント初期化、HUD登録、タイトル画面ボタン、キー割当
+- `RecCheckClient`: クライアント初期化、HUD登録、キー割当
+- `RecCheckClient`: クライアント初期化、HUD登録、キー割当
 - `ObsConnectionManager`: OBS WebSocket 接続、状態更新、自動再接続、接続テスト
 - `ObsConnectionSnapshot`: HUD がそのまま描画できる状態スナップショット
 - `ModConfig` / `ModConfigManager`: 永続設定

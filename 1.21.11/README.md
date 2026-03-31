@@ -1,4 +1,4 @@
-# REC Check
+# OBS Recording Monitor
 
 OBS Studio の録画状態を監視し、録画していない時だけ Minecraft HUD に警告を出す Fabric クライアント mod です。
 
@@ -12,7 +12,7 @@ OBS Studio の録画状態を監視し、録画していない時だけ Minecraf
 1. OBS Studio を起動
 2. OBS の「ツール」→「obs-websocket設定」を開く
 3. WebSocket を有効化し、必要ならパスワードを設定
-4. Minecraft で `REC Check 設定` を開く
+4. Minecraft で Mod Menu から `OBS Recording Monitor Settings` を開く
 5. ホスト、ポート、パスワードを入れて `接続テスト`
 6. 成功したら保存
 

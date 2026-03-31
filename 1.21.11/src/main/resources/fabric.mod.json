@@ -2,12 +2,17 @@
   "schemaVersion": 1,
   "id": "reccheck",
   "version": "${version}",
-  "name": "REC Check",
-  "description": "OBSの録画状態を監視して、録画忘れを防ぐクライアント専用Fabric modです。",
+  "name": "OBS Recording Monitor",
+  "description": "Shows a warning in-game when OBS is not recording.",
   "authors": ["yoima"],
+  "icon": "assets/reccheck/icon.png",
+  "contact": {
+    "homepage": "https://modrinth.com/project/obs-recording-monitor"
+  },
   "environment": "client",
   "entrypoints": {
-    "client": ["dev.yoima.reccheck.RecCheckClient"]
+    "client": ["dev.yoima.reccheck.RecCheckClient"],
+    "modmenu": ["dev.yoima.reccheck.integration.ModMenuIntegration"]
   },
   "depends": {
     "minecraft": "1.21.11",

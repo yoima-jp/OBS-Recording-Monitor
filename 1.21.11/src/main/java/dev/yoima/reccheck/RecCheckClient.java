@@ -13,12 +13,16 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.options.OptionsScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
+import net.fabricmc.fabric.api.client.screen.v1.Screens;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 public final class RecCheckClient implements ClientModInitializer {
 	public static final String MOD_ID = "reccheck";
@@ -27,6 +31,7 @@ public final class RecCheckClient implements ClientModInitializer {
 	private final ModConfigManager configManager = new ModConfigManager();
 	private final ObsConnectionManager obsConnectionManager = new ObsConnectionManager();
 	private final ObsHudRenderer hudRenderer = new ObsHudRenderer(obsConnectionManager, configManager);
+	private final Set<Screen> overlayHookedScreens = Collections.newSetFromMap(new WeakHashMap<>());
 	private KeyMapping startRecordKey;
 
 	public RecCheckClient() {
@@ -41,17 +46,59 @@ public final class RecCheckClient implements ClientModInitializer {
 		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "obs_warning"), hudRenderer);
 
 		ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
-			if (screen instanceof TitleScreen) {
-				Button button = Button.builder(Component.translatable("screen.reccheck.config.title"), b -> client.setScreen(new ConfigScreen(screen, configManager, obsConnectionManager)))
-					.bounds(width / 2 - 100, height / 4 + 132, 200, 20)
-					.build();
-				Screens.getButtons(screen).add(button);
-			}
-			ScreenEvents.afterRender(screen).register((s, graphics, mouseX, mouseY, delta) -> {
-				if (client.level == null) {
-					hudRenderer.renderOverlay(client, (Screen) s, graphics);
+			if (screen instanceof OptionsScreen) {
+				var buttons = Screens.getButtons(screen);
+				String openLabel = Component.translatable("screen.reccheck.button.open_short").getString();
+				String doneLabel = Component.translatable("gui.done").getString();
+				buttons.removeIf(existing -> existing.getMessage().getString().equals(openLabel));
+
+				int leftColumnX = Integer.MAX_VALUE;
+				int leftColumnWidth = 150;
+				int maxGridY = -1;
+				int doneY = Integer.MAX_VALUE;
+
+				for (var existing : buttons) {
+					String text = existing.getMessage().getString();
+					if (text.equals(doneLabel)) {
+						doneY = existing.getY();
+						continue;
+					}
+
+					if (text.equals(openLabel)) {
+						continue;
+					}
+
+					if (existing.getWidth() >= 140 && existing.getX() <= width / 2 - 2) {
+						leftColumnX = Math.min(leftColumnX, existing.getX());
+						leftColumnWidth = existing.getWidth();
+						maxGridY = Math.max(maxGridY, existing.getY());
+					} else if (existing.getWidth() >= 140 && existing.getX() > width / 2 - 2) {
+						maxGridY = Math.max(maxGridY, existing.getY());
+					}
 				}
-			});
+
+				if (leftColumnX == Integer.MAX_VALUE) {
+					leftColumnX = width / 2 - 155;
+				}
+
+				int openY = maxGridY >= 0 ? maxGridY + 24 : height - 96;
+				if (doneY != Integer.MAX_VALUE) {
+					openY = Math.min(openY, doneY - 24);
+				}
+				openY = Math.max(24, openY);
+
+				Button button = Button.builder(Component.translatable("screen.reccheck.button.open_short"), b -> client.setScreen(new ConfigScreen(screen, configManager, obsConnectionManager)))
+					.bounds(leftColumnX, openY, leftColumnWidth, 20)
+					.build();
+				buttons.add(button);
+			}
+			if (overlayHookedScreens.add(screen)) {
+				ScreenEvents.afterRender(screen).register((s, graphics, mouseX, mouseY, delta) -> {
+					if (client.level == null) {
+						hudRenderer.renderOverlay(client, (Screen) s, graphics);
+					}
+				});
+			}
 		});
 		obsConnectionManager.start();
 

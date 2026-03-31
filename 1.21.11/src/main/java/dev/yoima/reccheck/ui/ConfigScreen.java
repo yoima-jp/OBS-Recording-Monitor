@@ -47,18 +47,21 @@ public final class ConfigScreen extends Screen {
 
 	@Override
 	protected void init() {
-		int leftX = width / 2 - 154;
-		int rightX = width / 2 + 4;
+		int panelX = width / 2 - 170;
+		int leftX = panelX + 12;
+		int rightX = panelX + 178;
 		int fieldWidth = 150;
-		int row = 0;
+		int inputY = 80;
+		int toggleY = 80;
+		int footerY = 196;
 
-		hostField = addRenderableWidget(new EditBox(font, leftX, 34 + row++ * 22, fieldWidth, 20, Component.translatable("screen.reccheck.config.obs_host")));
+		hostField = addRenderableWidget(new EditBox(font, leftX, inputY, fieldWidth, 20, Component.translatable("screen.reccheck.config.obs_host")));
 		hostField.setValue(draft.obsHost);
 
-		portField = addRenderableWidget(new EditBox(font, leftX, 34 + row++ * 22, fieldWidth, 20, Component.translatable("screen.reccheck.config.obs_port")));
+		portField = addRenderableWidget(new EditBox(font, leftX, inputY + 22, fieldWidth, 20, Component.translatable("screen.reccheck.config.obs_port")));
 		portField.setValue(Integer.toString(draft.obsPort));
 
-		passwordField = addRenderableWidget(new EditBox(font, leftX, 34 + row++ * 22, 110, 20, Component.translatable("screen.reccheck.config.obs_password")));
+		passwordField = addRenderableWidget(new EditBox(font, leftX, inputY + 44, 110, 20, Component.translatable("screen.reccheck.config.obs_password")));
 		passwordField.setValue("");
 		passwordField.setSuggestion("password");
 		passwordField.setResponder(value -> passwordModified = true);
@@ -67,18 +70,18 @@ public final class ConfigScreen extends Screen {
 			passwordField.setValue("");
 			draft.obsPassword = "";
 			updatePasswordButtonText();
-		}).bounds(leftX + 114, 34 + 2 * 22, 36, 20).build());
+		}).bounds(leftX + 114, inputY + 44, 36, 20).build());
 
-		autoReconnectButton = addRenderableWidget(toggleButton(rightX, 34, 150, "screen.reccheck.config.auto_reconnect", () -> draft.autoReconnect = !draft.autoReconnect, () -> draft.autoReconnect));
-		hudAnchorButton = addRenderableWidget(cycleButton(rightX, 56, 150, "screen.reccheck.config.hud_position", () -> draft.hudAnchor = draft.hudAnchor.next(), () -> anchorLabel(draft.hudAnchor)));
-		hudScaleButton = addRenderableWidget(cycleButton(rightX, 78, 150, "screen.reccheck.config.hud_scale", () -> draft.hudScale = nextScale(draft.hudScale), () -> Component.literal(String.format("%.2fx", draft.hudScale))));
-		worldOnlyButton = addRenderableWidget(toggleButton(rightX, 100, 150, "screen.reccheck.config.world_only", () -> draft.worldOnly = !draft.worldOnly, () -> draft.worldOnly));
-		startHintButton = addRenderableWidget(toggleButton(rightX, 122, 150, "screen.reccheck.config.start_hint", () -> draft.showStartRecordHint = !draft.showStartRecordHint, () -> draft.showStartRecordHint));
+		autoReconnectButton = addRenderableWidget(toggleButton(rightX, toggleY, 150, "screen.reccheck.config.auto_reconnect", () -> draft.autoReconnect = !draft.autoReconnect, () -> draft.autoReconnect));
+		hudAnchorButton = addRenderableWidget(cycleButton(rightX, toggleY + 22, 150, "screen.reccheck.config.hud_position", () -> draft.hudAnchor = draft.hudAnchor.next(), () -> anchorLabel(draft.hudAnchor)));
+		hudScaleButton = addRenderableWidget(cycleButton(rightX, toggleY + 44, 150, "screen.reccheck.config.hud_scale", () -> draft.hudScale = nextScale(draft.hudScale), () -> Component.literal(String.format("%.2fx", draft.hudScale))));
+		worldOnlyButton = addRenderableWidget(toggleButton(rightX, toggleY + 66, 150, "screen.reccheck.config.world_only", () -> draft.worldOnly = !draft.worldOnly, () -> draft.worldOnly));
+		startHintButton = addRenderableWidget(toggleButton(rightX, toggleY + 88, 150, "screen.reccheck.config.start_hint", () -> draft.showStartRecordHint = !draft.showStartRecordHint, () -> draft.showStartRecordHint));
 
-		testButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.test"), button -> runTest()).bounds(leftX, 188, 72, 20).build());
-		helpButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.help"), button -> Minecraft.getInstance().setScreen(new HelpScreen(this))).bounds(leftX + 76, 188, 72, 20).build());
-		saveButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.save"), button -> save()).bounds(rightX, 188, 72, 20).build());
-		cancelButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.cancel"), button -> onClose()).bounds(rightX + 78, 188, 72, 20).build());
+		testButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.test"), button -> runTest()).bounds(leftX, footerY, 72, 20).build());
+		helpButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.help"), button -> Minecraft.getInstance().setScreen(new HelpScreen(this))).bounds(leftX + 76, footerY, 72, 20).build());
+		saveButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.save"), button -> save()).bounds(rightX, footerY, 72, 20).build());
+		cancelButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.cancel"), button -> onClose()).bounds(rightX + 78, footerY, 72, 20).build());
 
 		updatePasswordButtonText();
 		refreshToggleText();
@@ -86,19 +89,21 @@ public final class ConfigScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		int panelX = width / 2 - 170;
 		graphics.fillGradient(0, 0, width, height, 0xFF132030, 0xFF0E1116);
-		graphics.fill(width / 2 - 170, 18, width / 2 + 170, 214, 0xCC121821);
-		graphics.fill(width / 2 - 170, 18, width / 2 + 170, 19, 0xFF7EB6FF);
+		graphics.fill(panelX, 18, panelX + 340, 286, 0xCC121821);
+		graphics.fill(panelX, 18, panelX + 340, 19, 0xFF7EB6FF);
 		graphics.drawString(font, title, width / 2 - 168, 22, 0xFFFFFFFF, false);
-		graphics.drawString(font, Component.translatable("screen.reccheck.config.subtitle"), width / 2 - 168, 134, 0xFFB7C4D6, false);
+		graphics.drawWordWrap(font, Component.translatable("screen.reccheck.config.subtitle"), panelX + 12, 38, 316, 0xFFB7C4D6);
+		graphics.drawString(font, Component.translatable("screen.reccheck.section.connection"), panelX + 12, 62, 0xFFFFFFFF, false);
+		graphics.drawString(font, Component.translatable("screen.reccheck.section.behavior"), panelX + 178, 62, 0xFFFFFFFF, false);
 
-		graphics.drawString(font, Component.translatable("screen.reccheck.config.password_status", draft.obsPassword.isEmpty() ? Component.translatable("screen.reccheck.config.password_empty") : Component.translatable("screen.reccheck.config.password_set")), width / 2 - 154, 102, 0xFFB7C4D6, false);
-		graphics.drawString(font, Component.translatable("screen.reccheck.config.password_hint"), width / 2 - 154, 114, 0xFF8694A7, false);
+		graphics.drawString(font, Component.translatable("screen.reccheck.config.password_status", draft.obsPassword.isEmpty() ? Component.translatable("screen.reccheck.config.password_empty") : Component.translatable("screen.reccheck.config.password_set")), panelX + 12, 148, 0xFFB7C4D6, false);
+		graphics.drawWordWrap(font, Component.translatable("screen.reccheck.config.password_hint"), panelX + 12, 160, 150, 0xFF8694A7);
 
 		super.render(graphics, mouseX, mouseY, delta);
 
-		int panelX = width / 2 - 170;
-		int panelY = 222;
+		int panelY = 224;
 		graphics.fill(panelX, panelY, panelX + 340, panelY + 38, 0xCC121821);
 		graphics.fill(panelX, panelY, panelX + 340, panelY + 1, 0xFF7EB6FF);
 		graphics.drawString(font, Component.translatable(lastTestResult.headlineKey()), panelX + 8, panelY + 7, lastTestResult.passed() ? 0xFF82F0A1 : 0xFFFF8A80, false);
