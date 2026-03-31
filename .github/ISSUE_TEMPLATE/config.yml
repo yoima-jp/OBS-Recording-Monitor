@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Setup guide
+    url: https://github.com/yoima-jp/OBS-Recording-Monitor/tree/main/1.21.11#readme
+    about: Check the README first for OBS connection and setup steps.

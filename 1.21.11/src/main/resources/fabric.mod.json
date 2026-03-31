@@ -5,9 +5,12 @@
   "name": "OBS Recording Monitor",
   "description": "Shows a warning in-game when OBS is not recording.",
   "authors": ["yoima"],
+  "license": "MIT",
   "icon": "assets/reccheck/icon.png",
   "contact": {
-    "homepage": "https://modrinth.com/project/obs-recording-monitor"
+    "homepage": "https://modrinth.com/project/obs-recording-monitor",
+    "issues": "https://github.com/yoima-jp/OBS-Recording-Monitor/issues",
+    "sources": "https://github.com/yoima-jp/OBS-Recording-Monitor"
   },
   "environment": "client",
   "entrypoints": {

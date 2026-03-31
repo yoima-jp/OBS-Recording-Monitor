@@ -1,0 +1,92 @@
+name: Bug report
+description: Report a problem with OBS Recording Monitor
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting the problem.
+        Please fill in the items below so we can reproduce it.
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod version
+      description: Example: 1.0.0
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: Minecraft version
+      description: Example: 1.21.11
+      placeholder: 1.21.11
+    validations:
+      required: true
+  - type: input
+    id: fabric-loader-version
+    attributes:
+      label: Fabric Loader version
+      description: Example: 0.18.2
+      placeholder: 0.18.2
+    validations:
+      required: false
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: Windows, macOS, Linux, etc.
+      placeholder: Windows 11
+    validations:
+      required: true
+  - type: dropdown
+    id: obs-state
+    attributes:
+      label: OBS state
+      options:
+        - OBS is running and recording
+        - OBS is running but not recording
+        - OBS is running but connection fails
+        - OBS is not running
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Tell us what you expected and what actually happened.
+      placeholder: The HUD stayed red even though OBS was recording...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the smallest set of steps that reproduces the issue.
+      placeholder: |
+        1. Open Minecraft
+        2. Connect the mod to OBS
+        3. Start recording
+        4. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste relevant logs, crash reports, or screenshots if you have them.
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked the existing issues first
+          required: true
+        - label: I filled in the version information above
+          required: true

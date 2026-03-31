@@ -9,13 +9,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.network.chat.Component;
 
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class ConfigScreen extends Screen {
+	private static final String NEW_ISSUE_URL = "https://github.com/yoima-jp/OBS-Recording-Monitor/issues/new/choose";
+
 	private final Screen parent;
 	private final ModConfigManager configManager;
 	private final ObsConnectionManager connectionManager;
@@ -35,6 +40,7 @@ public final class ConfigScreen extends Screen {
 	private Button saveButton;
 	private Button cancelButton;
 	private Button helpButton;
+	private Button issueButton;
 	private ObsTestResult lastTestResult = ObsTestResult.failure("test.reccheck.pending", "test.reccheck.pending.detail", dev.yoima.reccheck.obs.ObsIssueKind.UNKNOWN, List.of());
 
 	public ConfigScreen(Screen parent, ModConfigManager configManager, ObsConnectionManager connectionManager) {
@@ -54,6 +60,10 @@ public final class ConfigScreen extends Screen {
 		int inputY = 80;
 		int toggleY = 80;
 		int footerY = 196;
+		int footerButtonWidth = 72;
+		int footerButtonGap = 4;
+		int footerLeftX = panelX + 12;
+		int issueButtonSize = 20;
 
 		hostField = addRenderableWidget(new EditBox(font, leftX, inputY, fieldWidth, 20, Component.translatable("screen.reccheck.config.obs_host")));
 		hostField.setValue(draft.obsHost);
@@ -77,11 +87,13 @@ public final class ConfigScreen extends Screen {
 		hudScaleButton = addRenderableWidget(cycleButton(rightX, toggleY + 44, 150, "screen.reccheck.config.hud_scale", () -> draft.hudScale = nextScale(draft.hudScale), () -> Component.literal(String.format("%.2fx", draft.hudScale))));
 		worldOnlyButton = addRenderableWidget(toggleButton(rightX, toggleY + 66, 150, "screen.reccheck.config.world_only", () -> draft.worldOnly = !draft.worldOnly, () -> draft.worldOnly));
 		showHudButton = addRenderableWidget(toggleButton(rightX, toggleY + 88, 150, "screen.reccheck.config.show_hud", () -> draft.showHud = !draft.showHud, () -> draft.showHud));
+		issueButton = addRenderableWidget(Button.builder(Component.literal("!"), ConfirmLinkScreen.confirmLink(this, URI.create(NEW_ISSUE_URL), true)).bounds(panelX + 308, 22, issueButtonSize, issueButtonSize).build());
+		issueButton.setTooltip(Tooltip.create(Component.translatable("screen.reccheck.button.issue")));
 
-		testButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.test"), button -> runTest()).bounds(leftX, footerY, 72, 20).build());
-		helpButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.help"), button -> Minecraft.getInstance().setScreen(new HelpScreen(this))).bounds(leftX + 76, footerY, 72, 20).build());
-		saveButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.save"), button -> save()).bounds(rightX, footerY, 72, 20).build());
-		cancelButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.cancel"), button -> onClose()).bounds(rightX + 78, footerY, 72, 20).build());
+		testButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.test_short"), button -> runTest()).bounds(footerLeftX, footerY, footerButtonWidth, 20).build());
+		helpButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.help_short"), button -> Minecraft.getInstance().setScreen(new HelpScreen(this))).bounds(footerLeftX + (footerButtonWidth + footerButtonGap), footerY, footerButtonWidth, 20).build());
+		saveButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.save"), button -> save()).bounds(footerLeftX + (footerButtonWidth + footerButtonGap) * 2, footerY, footerButtonWidth, 20).build());
+		cancelButton = addRenderableWidget(Button.builder(Component.translatable("screen.reccheck.button.cancel"), button -> onClose()).bounds(footerLeftX + (footerButtonWidth + footerButtonGap) * 3, footerY, footerButtonWidth, 20).build());
 
 		updatePasswordButtonText();
 		refreshToggleText();
