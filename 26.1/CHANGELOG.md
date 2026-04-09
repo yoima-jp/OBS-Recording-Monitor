@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- Fabric の対応 Minecraft バージョンを `26.1.x` に拡張
+
 ## 1.0.0
 - OBS録画状態の監視を追加
 - HUD警告表示を追加

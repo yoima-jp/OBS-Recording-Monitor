@@ -32,7 +32,7 @@ It is designed to be simple:
 
 ## Requirements
 
-- Minecraft `26.1`
+- Minecraft `26.1.x`
 - Fabric Loader
 - Fabric API required
 - Java `25`

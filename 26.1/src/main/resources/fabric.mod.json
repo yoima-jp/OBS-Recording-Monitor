@@ -18,7 +18,7 @@
     "modmenu": ["dev.yoima.reccheck.integration.ModMenuIntegration"]
   },
   "depends": {
-    "minecraft": "26.1",
+    "minecraft": "26.1.x",
     "fabricloader": ">=0.18.4",
     "fabric-api": "*"
   }
