@@ -86,7 +86,7 @@ public final class ConfigScreen extends Screen {
 		hudAnchorButton = addRenderableWidget(cycleButton(rightX, toggleY + 22, 150, "screen.reccheck.config.hud_position", () -> draft.hudAnchor = draft.hudAnchor.next(), () -> anchorLabel(draft.hudAnchor)));
 		hudScaleButton = addRenderableWidget(cycleButton(rightX, toggleY + 44, 150, "screen.reccheck.config.hud_scale", () -> draft.hudScale = nextScale(draft.hudScale), () -> Component.literal(String.format("%.2fx", draft.hudScale))));
 		worldOnlyButton = addRenderableWidget(toggleButton(rightX, toggleY + 66, 150, "screen.reccheck.config.world_only", () -> draft.worldOnly = !draft.worldOnly, () -> draft.worldOnly));
-		showHudButton = addRenderableWidget(toggleButton(rightX, toggleY + 88, 150, "screen.reccheck.config.show_hud", () -> draft.showHud = !draft.showHud, () -> draft.showHud));
+		showHudButton = addRenderableWidget(cycleButton(rightX, toggleY + 88, 150, "screen.reccheck.config.show_hud", () -> cycleHudMode(draft), () -> hudModeLabel(draft)));
 		issueButton = addRenderableWidget(Button.builder(Component.literal("!"), ConfirmLinkScreen.confirmLink(this, URI.create(NEW_ISSUE_URL), true)).bounds(panelX + 308, 22, issueButtonSize, issueButtonSize).build());
 		issueButton.setTooltip(Tooltip.create(Component.translatable("screen.reccheck.button.issue")));
 
@@ -189,7 +189,7 @@ public final class ConfigScreen extends Screen {
 
 	private void refreshToggleText() {
 		autoReconnectButton.setMessage(toggleLabel("screen.reccheck.config.auto_reconnect", draft.autoReconnect));
-		showHudButton.setMessage(toggleLabel("screen.reccheck.config.show_hud", draft.showHud));
+		showHudButton.setMessage(Component.translatable("screen.reccheck.config.show_hud", hudModeLabel(draft)));
 		worldOnlyButton.setMessage(toggleLabel("screen.reccheck.config.world_only", draft.worldOnly));
 		hudAnchorButton.setMessage(Component.translatable("screen.reccheck.config.hud_position", anchorLabel(draft.hudAnchor)));
 		hudScaleButton.setMessage(Component.translatable("screen.reccheck.config.hud_scale", Component.literal(String.format("%.2fx", draft.hudScale))));
@@ -211,6 +211,25 @@ public final class ConfigScreen extends Screen {
 
 	private static Component toggleLabel(String key, boolean value) {
 		return Component.translatable(key, Component.translatable(value ? "screen.reccheck.state.on" : "screen.reccheck.state.off"));
+	}
+
+	private static void cycleHudMode(ModConfig config) {
+		if (!config.showHud) {
+			config.showHud = true;
+			config.liteHud = false;
+		} else if (!config.liteHud) {
+			config.liteHud = true;
+		} else {
+			config.showHud = false;
+			config.liteHud = false;
+		}
+	}
+
+	private static Component hudModeLabel(ModConfig config) {
+		String key = !config.showHud
+			? "screen.reccheck.hud_mode.off"
+			: config.liteHud ? "screen.reccheck.hud_mode.lite" : "screen.reccheck.hud_mode.full";
+		return Component.translatable(key);
 	}
 
 	private static Component anchorLabel(HudAnchor anchor) {

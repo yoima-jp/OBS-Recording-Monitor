@@ -21,6 +21,7 @@ public final class ObsHudRenderer implements HudElement {
 	private static final int DETAIL_Y = 18;
 	private static final int HINT_BOX_Y = 28;
 	private static final int HINT_TEXT_Y = 31;
+	private static final int LITE_ICON_SIZE = 12;
 
 	private final dev.yoima.reccheck.obs.ObsConnectionManager manager;
 	private final ModConfigManager configManager;
@@ -49,6 +50,10 @@ public final class ObsHudRenderer implements HudElement {
 		int width = client.getWindow().getGuiScaledWidth();
 		int height = client.getWindow().getGuiScaledHeight();
 		float scale = (float) config.hudScale;
+		if (config.liteHud) {
+			renderLiteHud(graphics, width, height, scale, config.hudAnchor, snapshot);
+			return;
+		}
 		Component headline = Component.translatable(snapshot.headlineKey());
 		Component detail = Component.translatable(snapshot.detailKey());
 		Component hint = snapshot.state() == ObsConnectionState.CONNECTED_NOT_RECORDING
@@ -148,6 +153,45 @@ public final class ObsHudRenderer implements HudElement {
 			case AUTH_FAILED, ERROR -> 0xFFFF6B6B;
 			case DISCONNECTED -> 0xFFFFA54A;
 			default -> 0xFFE7A72A;
+		};
+	}
+
+	private static void renderLiteHud(GuiGraphics graphics, int width, int height, float scale, HudAnchor anchor, ObsConnectionSnapshot snapshot) {
+		int size = Math.max(8, Math.round(LITE_ICON_SIZE * scale));
+		int margin = 8;
+		int x = switch (anchor) {
+			case TOP_RIGHT, BOTTOM_RIGHT -> width - margin - size;
+			case TOP_LEFT, BOTTOM_LEFT -> margin;
+		};
+		int y = switch (anchor) {
+			case TOP_LEFT, TOP_RIGHT -> margin;
+			case BOTTOM_LEFT, BOTTOM_RIGHT -> height - margin - size;
+		};
+
+		// Lite HUD intentionally avoids text and a panel so a captured stream only sees the smallest actionable status marker.
+		drawCircle(graphics, x, y, size, 0xCC111111);
+		drawCircle(graphics, x + 1, y + 1, size - 2, liteColor(snapshot));
+	}
+
+	private static void drawCircle(GuiGraphics graphics, int x, int y, int diameter, int color) {
+		double center = (diameter - 1) / 2.0D;
+		double radius = diameter / 2.0D;
+		for (int row = 0; row < diameter; row++) {
+			double dy = row - center;
+			double halfWidth = Math.sqrt(Math.max(0.0D, radius * radius - dy * dy));
+			int left = (int) Math.ceil(center - halfWidth);
+			int right = (int) Math.floor(center + halfWidth) + 1;
+			graphics.fill(x + left, y + row, x + right, y + row + 1, color);
+		}
+	}
+
+	private static int liteColor(ObsConnectionSnapshot snapshot) {
+		return switch (snapshot.state()) {
+			case CONNECTED_NOT_RECORDING -> 0xFFFF4545;
+			case CONNECTING -> 0xFFFFD24A;
+			case DISCONNECTED -> 0xFFFF9F43;
+			case AUTH_FAILED, ERROR -> 0xFFFF5C8A;
+			default -> 0xFFFF4545;
 		};
 	}
 

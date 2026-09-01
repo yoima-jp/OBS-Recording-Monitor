@@ -32,6 +32,7 @@ public final class ModConfigManager {
 			loaded.obsPassword = getString(root, "obsPassword", loaded.obsPassword);
 			loaded.autoReconnect = getBoolean(root, "autoReconnect", loaded.autoReconnect);
 			loaded.showHud = getBoolean(root, "showHud", loaded.showHud);
+			loaded.liteHud = getBoolean(root, "liteHud", loaded.liteHud);
 			loaded.hudAnchor = parseHudAnchor(getString(root, "hudAnchor", loaded.hudAnchor.name()));
 			loaded.hudScale = getDouble(root, "hudScale", loaded.hudScale);
 			loaded.worldOnly = getBoolean(root, "worldOnly", loaded.worldOnly);
@@ -80,6 +81,7 @@ public final class ModConfigManager {
 		root.addProperty("obsPassword", config.obsPassword);
 		root.addProperty("autoReconnect", config.autoReconnect);
 		root.addProperty("showHud", config.showHud);
+		root.addProperty("liteHud", config.liteHud);
 		root.addProperty("hudAnchor", config.hudAnchor.name());
 		root.addProperty("hudScale", config.hudScale);
 		root.addProperty("worldOnly", config.worldOnly);

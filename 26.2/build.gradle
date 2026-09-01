@@ -1,9 +1,13 @@
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
-version = project.mod_version
+version = LocalDate.now(ZoneId.of('Asia/Tokyo')).format(DateTimeFormatter.ofPattern('yy.MM.dd'))
 group = project.maven_group
 
 base {
